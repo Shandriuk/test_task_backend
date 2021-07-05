@@ -33,7 +33,7 @@ def parcing_phone(query_string):
     parcing_phone = re.search(r"phone=([^&]+)", query_string)
     if parcing_phone != None:
         parcing_phone = parcing_phone.group(1)
-        if parcing_phone[0] != "+" and len(parcing_phone) != 12:
+        if parcing_phone[0] != "+" or len(parcing_phone) != 12:
             parcing_phone = None	
     else:
         parcing_phone = None
