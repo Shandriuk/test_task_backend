@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  website_tags_env:
+    build: .
+    environment:
+      MYENV: EXAMPLE
+    volumes:
+      - .:/website_tags:rw
+
+  website_tags_make_migrations:
+    extends:
+      service: website_tags_env
+    command: python task_backend/manage.py makemigrations
+
+  website_tags_migrate:
+    extends:
+      service: website_tags_env
+    depends_on:
+      - website_tags_make_migrations
+    command: python task_backend/manage.py migrate
+
+
+  runserver:
+    extends:
+      service: website_tags_env
+    depends_on:
+      - website_tags_migrate
+    network_mode: "host"
+    command: python task_backend/manage.py runserver 0.0.0.0:8080
+
